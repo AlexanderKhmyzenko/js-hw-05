@@ -1,35 +1,22 @@
-// Callback функция
-// Функция mapArray(array, cb), принимает 1 - м параметром array - массив чисел,
-//   а вторым параметром cb - функцию обратного вызова(callback).
-// Функция mapArray создает новый массив numbers и заполняет его числами из массива array преобразованными функцией cb.
+// function-constructor
+// Напиши функцию - конструктор Account, которая создает объект со свойствами login и email.
 
-// Оформи создание массива numbers нужной длины используя new Array() и необходимый аргумент для задания длины,
-//   равной длине array.
+// В prototype функции - конструктора добавь метод getInfo(),
+//   который возвращает строку со значениями свойств login и email объекта.
 
-// Напиши функцию обратного вызова addIndex, которая принимает два параметра - element и index
-// и возвращает число - сумму element и index(сложение).
+const Account = function (login, email) {
+  this.login = login;
+  this.email = email;
+};
 
-// Напиши функцию обратного вызова subIndex, которая принимает два параметра - element и index
-// и возвращает число - разность element и index(вычитание).
+Account.prototype.getInfo = function () {
+  return `login : ${this.login}, email: ${this.email}`;
+};
 
-const addIndex = (element, index) => element + index;
-const subIndex = (element, index) => element - index;
+console.log(typeof Account.prototype.getInfo);
 
-function mapArray(array, cb) {
-  "use strict";
-  const numbers = new Array(array.length);
-  for (let i = 0; i < array.length; i += 1) {
-    const element = array[i];
-    const index = i;
-    numbers[i] = cb(element, index);
-  }
-  return numbers;
-}
+const mango = new Account("Mangozedog", "mango@dog.woof");
+console.log(mango.getInfo());
 
-const arr = [1, 2, 3, 4, 5];
-
-console.log(mapArray(arr, addIndex));
-// [1, 3, 5, 7, 9]
-
-console.log(mapArray(arr, subIndex));
-// [1, 1, 1, 1, 1]
+const poly = new Account("Poly", "poly@mail.com");
+console.log(poly.getInfo());
