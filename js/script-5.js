@@ -1,48 +1,168 @@
-// bind для замены this в методах объекта
-// Оформи вызов метода invokeInventoryAction таким образом, чтобы в качестве this для методов
+// класс
+// Напиши класс Car с указанными свойствами и методами.
 
-// inventory.add
-// inventory.remove выступал объект inventory
+// class Car {
 
-const inventory = {
-  items: ["Knife", "Gas mask"],
-  add(itemName) {
-    this.items.push(itemName);
-    return `Adding ${itemName} to inventory`;
-  },
-  remove(itemName) {
-    this.items = this.items.filter((item) => item !== itemName);
-    return `Removing ${itemName} from inventory`;
-  },
-};
+//    * Добавь `статический` метод
+//    * `getSpecs(car)`, который принимает
+//    * объект-машину как параметр
+//    * и возвращает шаблонную строку
+//    * со свойствами и значениями объекта.
+//    * Свойства:
+//    *   maxSpeed,
+//    *   speed,
+//    *   isOn,
+//    *   distance,
+//    *   price
+//    * Пример строки, полученной этим методом:
+//    * 'maxSpeed: 200, speed: 50, isOn: true, distance: 100, price: 2000'
 
-const invokeInventoryAction = function (itemName, action) {
-  const act = action(itemName);
-  const msg = `Invoking action on ${itemName}`;
-  return { act, msg };
-};
+//    * Конструктор получает объект настроек.
+//    *
+//    * Добавь свойства будущеего экземпляра класса:
+//    *  speed - текущая скорость,
+//    *          начальное значение `0`
+//    *  price - цена автомобиля
+//    *  maxSpeed - максимальная скорость
+//    *  isOn - заведен ли автомобиль.
+//    *         Значения `true` или `false`,
+//    *         начальное значение false
+//    *  distance - пробег в километрах,
+//    *             начальное значение `0`
 
-const invokeAdd = invokeInventoryAction(
-  "Medkit",
-  inventory.add.bind(inventory) // Write code in this line
-);
-const arrayAdd = [...inventory.items];
+//   constructor() { }
 
-console.log(invokeAdd);
-//{ act: 'Adding Medkit to inventory', msg: 'Invoking action on Medkit' }
+//    * Добавь геттер и сеттер
+//    * для свойства `price`, который будет
+//    * работать с свойством цены автомобиля.
+//    *
+//    * ВАЖНО: для записи методов get и set
+//    * значение параметра записывают с
+//    * подчеркиванием. См. ниже пример 1.
 
-console.log(arrayAdd);
-// ['Knife', 'Gas mask', 'Medkit']
+//    * Метод, который заводит автомобиль
+//    * Записывает в свойство `isOn` значение `true`
 
-const invokeRemove = invokeInventoryAction(
-  "Gas mask",
-  inventory.remove.bind(inventory) // Write code in this line
-);
+//   turnOn() { }
 
-const arrayRemove = [...inventory.items];
+//    * Метод, чтобы заглушить автомобиль
+//    * Этот метод должен записывать
+//    * в свойство isOn значение false,
+//    * и сбрасывать текущую скорость до 0
 
-console.log(invokeRemove);
-//{ act: 'Removing Gas mask from inventory', msg: 'Invoking action on Gas mask' }
+//   turnOff() { }
 
-console.log(arrayRemove);
-// ['Knife', 'Medkit']
+//    * Этот метод должен добавлять
+//    * к свойству `speed` полученное
+//    * значение, при условии,
+//    * что результирующая скорость
+//    * не больше чем значение свойства `maxSpeed`
+
+//   accelerate(value) { }
+
+//    * Этот метод должен отнимать
+//    * от свойства `speed`
+//    * полученное значение, при условии,
+//    * что результирующая скорость не меньше 0
+
+//   decelerate(value) { }
+
+//    * Этот метод должен добавлять к свойству
+//    * `distance` пробег в километрах,
+//    * т.е. hours * speed,
+//    * но только в том случае,
+//    * если машина заведена!
+
+//   drive(hours) { }
+// }
+
+// #### Пример 1.
+
+//   ```js
+// class Guest {
+//   // Собственные свойства класса размещаем в конструкторе
+//   constructor(name, roomNumber) {
+//     /* параметр name не должен
+//      *   совпадать с названием свойства
+//      *   но должен быть похож.
+//      *   Поэтому используют прием смены
+//      *   названия добавляя символ '_'.
+//      *   Хотя это может любой другой символ
+//      */
+//     this._name = name;
+//   }
+
+//   // Используем геттеры и сеттеры для описания интерфейса доступа к свойствам
+//   get name() {
+//     return this._name;
+//   }
+
+//   set name(value) {
+//     this._name = value;
+//   }
+// }
+
+class Car {
+  // Write code under this line
+  static getSpecs(car) {
+    return `maxSpeed: ${car.maxSpeed}, speed: ${car.speed}, isOn: ${car.isOn}, distance: ${car.distance}, price: ${car._price}`;
+  }
+  constructor(car) {
+    this.speed = 0;
+    this._price = car.price;
+    this.maxSpeed = car.maxSpeed;
+    this.isOn = false;
+    this.distance = 0;
+  }
+  get price() {
+    return this._price;
+  }
+  set price(value) {
+    this._price = value;
+  }
+  turnOn() {
+    this.isOn = true;
+  }
+  turnOff() {
+    this.isOn = false;
+    this.speed = 0;
+  }
+  accelerate(value) {
+    if (this.speed + value >= this.maxSpeed) {
+      this.speed = this.maxSpeed;
+    } else {
+      this.speed += value;
+    }
+  }
+  decelerate(value) {
+    if (this.speed - value > 0) {
+      this.speed -= value;
+    } else {
+      this.speed = 0;
+    }
+  }
+  drive(hours) {
+    if (this.isOn) {
+      this.distance += hours * this.speed;
+    }
+  }
+}
+
+const mustang = new Car({ maxSpeed: 200, price: 2000 });
+mustang.turnOn();
+mustang.accelerate(50);
+mustang.drive(2);
+
+console.log(Car.getSpecs(mustang));
+// 'maxSpeed: 200, speed: 50, isOn: true, distance: 100, price: 2000'
+
+mustang.decelerate(20);
+mustang.drive(1);
+mustang.turnOff();
+
+console.log(Car.getSpecs(mustang));
+// 'maxSpeed: 200, speed: 0, isOn: false, distance: 130, price: 2000'
+
+console.log(mustang.price); // 2000
+mustang.price = 4000;
+console.log(mustang.price); // 4000
