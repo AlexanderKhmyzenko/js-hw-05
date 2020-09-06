@@ -1,46 +1,62 @@
-// Суммирование значений свойства из массива объектов
-// Напиши функцию calculateTotalPrice(allProdcuts, productName),
-// которая получает массив объектов и имя продукта(значение свойства name).
-// Возвращает общую стоимость продукта(цена умноженная на количество).
-// Вызовы функции для проверки работоспособности твоей реализации.
-
-// calculateTotalPrice(products, 'Радар')); // 9080
-
-// calculateTotalPrice(products, 'Сканер')); // 10200
-
-// calculateTotalPrice(products, 'Захват')); // 2400
-
-// calculateTotalPrice(products, 'Дроид')); // 2800
-
-function calculateTotalPrice(array, prop) {
-  "use strict";
-  let totalPrice = 0;
-  for (const element of array) {
-    if (element.name === prop) {
-      totalPrice += element.price * element.quantity;
+class Car {
+  static getSpecs(car) {
+    return `maxSpeed: ${car.maxSpeed}, speed: ${car.speed}, isOn: ${car.isOn}, distance: ${car.distance}, price: ${car._price}`;
+  }
+  constructor(
+    { speed = 0, price, maxSpeed, isOn = false, distance = 0 } = { car }
+  ) {
+    (this.speed = speed),
+      (this._price = price),
+      (this.maxSpeed = maxSpeed),
+      (this.isOn = isOn),
+      (this.distance = distance);
+  }
+  get price() {
+    return this._price;
+  }
+  set price(value) {
+    this._price = value;
+  }
+  turnOn() {
+    this.isOn = true;
+  }
+  turnOff() {
+    this.isOn = false;
+    this.speed = 0;
+  }
+  accelerate(value) {
+    if (value + this.speed < this.maxSpeed) {
+      this.speed += value;
+      // console.log(this.speed);
     }
   }
-  return totalPrice;
+  decelerate(value) {
+    if (this.speed - value > 0) {
+      this.speed -= value;
+      // console.log(this.speed);
+    }
+  }
+  drive(hours) {
+    if ((this.isOn = true)) {
+      this.distance += hours * this.speed;
+    }
+  }
 }
-// Объекты и ожидаемый результат
-const products = [
-  { name: "Радар", price: 1300, quantity: 4 },
-  { name: "Радар", price: 1280, quantity: 2 },
-  { name: "Радар", price: 1320, quantity: 1 },
-  { name: "Сканер", price: 2700, quantity: 1 },
-  { name: "Сканер", price: 2500, quantity: 3 },
-  { name: "Дроид", price: 400, quantity: 7 },
-  { name: "Захват", price: 1200, quantity: 2 },
-];
+const mustang = new Car({ maxSpeed: 200, price: 2000 });
+mustang.turnOn();
+mustang.accelerate(50);
+mustang.drive(2);
 
-console.log(calculateTotalPrice(products, "Радар"));
-// 9080
+console.log(Car.getSpecs(mustang));
+// 'maxSpeed: 200, speed: 50, isOn: true, distance: 100, price: 2000'
 
-console.log(calculateTotalPrice(products, "Сканер"));
-// 10200
+mustang.decelerate(20);
+mustang.drive(1);
+mustang.turnOff();
 
-console.log(calculateTotalPrice(products, "Захват"));
-// 2400
+console.log(Car.getSpecs(mustang));
+// 'maxSpeed: 200, speed: 0, isOn: false, distance: 130, price: 2000'
 
-console.log(calculateTotalPrice(products, "Дроид"));
-// 2800
+console.log(mustang.price); // 2000
+mustang.price = 4000;
+console.log(mustang.price); // 4000
